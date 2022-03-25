@@ -30,10 +30,10 @@ type Pedido struct {
 
 	CuentaCorriente int64 `json:"cuentaCorriente"`
 
-	Cuandos string `json:"cuandos"`
+	Cuando string `json:"cuando"`
 }
 
-const PedidoAvroCRC64Fingerprint = "\xe6\xaa\bO<\xe4bH"
+const PedidoAvroCRC64Fingerprint = "\x13 \xa1\x85W\xe7\xba\xf2"
 
 func NewPedido() Pedido {
 	r := Pedido{}
@@ -89,7 +89,7 @@ func writePedido(r Pedido, w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	err = vm.WriteString(r.Cuandos, w)
+	err = vm.WriteString(r.Cuando, w)
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (r Pedido) Serialize(w io.Writer) error {
 }
 
 func (r Pedido) Schema() string {
-	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"numeroDePedido\",\"type\":\"int\"},{\"name\":\"cicloDelPedido\",\"type\":\"string\"},{\"name\":\"codigoDeContratoInterno\",\"type\":\"long\"},{\"name\":\"estadoDelPedido\",\"type\":\"string\"},{\"name\":\"cuentaCorriente\",\"type\":\"long\"},{\"name\":\"cuandos\",\"type\":\"string\"}],\"name\":\"Andreani.Scheme.Onboarding.Pedido\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"numeroDePedido\",\"type\":\"int\"},{\"name\":\"cicloDelPedido\",\"type\":\"string\"},{\"name\":\"codigoDeContratoInterno\",\"type\":\"long\"},{\"name\":\"estadoDelPedido\",\"type\":\"string\"},{\"name\":\"cuentaCorriente\",\"type\":\"long\"},{\"name\":\"cuando\",\"type\":\"string\"}],\"name\":\"Andreani.Scheme.Onboarding.Pedido\",\"type\":\"record\"}"
 }
 
 func (r Pedido) SchemaName() string {
@@ -150,7 +150,7 @@ func (r *Pedido) Get(i int) types.Field {
 		return w
 
 	case 6:
-		w := types.String{Target: &r.Cuandos}
+		w := types.String{Target: &r.Cuando}
 
 		return w
 
@@ -206,7 +206,7 @@ func (r Pedido) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	output["cuandos"], err = json.Marshal(r.Cuandos)
+	output["cuando"], err = json.Marshal(r.Cuando)
 	if err != nil {
 		return nil, err
 	}
@@ -305,18 +305,18 @@ func (r *Pedido) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("no value specified for cuentaCorriente")
 	}
 	val = func() json.RawMessage {
-		if v, ok := fields["cuandos"]; ok {
+		if v, ok := fields["cuando"]; ok {
 			return v
 		}
 		return nil
 	}()
 
 	if val != nil {
-		if err := json.Unmarshal([]byte(val), &r.Cuandos); err != nil {
+		if err := json.Unmarshal([]byte(val), &r.Cuando); err != nil {
 			return err
 		}
 	} else {
-		return fmt.Errorf("no value specified for cuandos")
+		return fmt.Errorf("no value specified for cuando")
 	}
 	return nil
 }

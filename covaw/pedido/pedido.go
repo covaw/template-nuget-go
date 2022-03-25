@@ -30,14 +30,14 @@ type Pedido struct {
 
 	CuentaCorriente int64 `json:"cuentaCorriente"`
 
-	Cuando *UnionNullString `json:"cuando"`
+	Cuandos *UnionNullString `json:"cuandos"`
 }
 
-const PedidoAvroCRC64Fingerprint = "@X,r\x8a\xeb3\x94"
+const PedidoAvroCRC64Fingerprint = "~\x81\xa0\u007fr\x1f\x92\x89"
 
 func NewPedido() Pedido {
 	r := Pedido{}
-	r.Cuando = nil
+	r.Cuandos = nil
 	return r
 }
 
@@ -90,7 +90,7 @@ func writePedido(r Pedido, w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	err = writeUnionNullString(r.Cuando, w)
+	err = writeUnionNullString(r.Cuandos, w)
 	if err != nil {
 		return err
 	}
@@ -102,7 +102,7 @@ func (r Pedido) Serialize(w io.Writer) error {
 }
 
 func (r Pedido) Schema() string {
-	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"numeroDePedido\",\"type\":\"int\"},{\"name\":\"cicloDelPedido\",\"type\":\"string\"},{\"name\":\"codigoDeContratoInterno\",\"type\":\"long\"},{\"name\":\"estadoDelPedido\",\"type\":\"string\"},{\"name\":\"cuentaCorriente\",\"type\":\"long\"},{\"default\":null,\"name\":\"cuando\",\"type\":[\"null\",\"string\"]}],\"name\":\"Andreani.Scheme.Onboarding.Pedido\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"numeroDePedido\",\"type\":\"int\"},{\"name\":\"cicloDelPedido\",\"type\":\"string\"},{\"name\":\"codigoDeContratoInterno\",\"type\":\"long\"},{\"name\":\"estadoDelPedido\",\"type\":\"string\"},{\"name\":\"cuentaCorriente\",\"type\":\"long\"},{\"default\":null,\"name\":\"cuandos\",\"type\":[\"null\",\"string\"]}],\"name\":\"Andreani.Scheme.Onboarding.Pedido\",\"type\":\"record\"}"
 }
 
 func (r Pedido) SchemaName() string {
@@ -151,9 +151,9 @@ func (r *Pedido) Get(i int) types.Field {
 		return w
 
 	case 6:
-		r.Cuando = NewUnionNullString()
+		r.Cuandos = NewUnionNullString()
 
-		return r.Cuando
+		return r.Cuandos
 	}
 	panic("Unknown field index")
 }
@@ -161,7 +161,7 @@ func (r *Pedido) Get(i int) types.Field {
 func (r *Pedido) SetDefault(i int) {
 	switch i {
 	case 6:
-		r.Cuando = nil
+		r.Cuandos = nil
 		return
 	}
 	panic("Unknown field index")
@@ -170,7 +170,7 @@ func (r *Pedido) SetDefault(i int) {
 func (r *Pedido) NullField(i int) {
 	switch i {
 	case 6:
-		r.Cuando = nil
+		r.Cuandos = nil
 		return
 	}
 	panic("Not a nullable field index")
@@ -212,7 +212,7 @@ func (r Pedido) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	output["cuando"], err = json.Marshal(r.Cuando)
+	output["cuandos"], err = json.Marshal(r.Cuandos)
 	if err != nil {
 		return nil, err
 	}
@@ -311,20 +311,20 @@ func (r *Pedido) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("no value specified for cuentaCorriente")
 	}
 	val = func() json.RawMessage {
-		if v, ok := fields["cuando"]; ok {
+		if v, ok := fields["cuandos"]; ok {
 			return v
 		}
 		return nil
 	}()
 
 	if val != nil {
-		if err := json.Unmarshal([]byte(val), &r.Cuando); err != nil {
+		if err := json.Unmarshal([]byte(val), &r.Cuandos); err != nil {
 			return err
 		}
 	} else {
-		r.Cuando = NewUnionNullString()
+		r.Cuandos = NewUnionNullString()
 
-		r.Cuando = nil
+		r.Cuandos = nil
 	}
 	return nil
 }

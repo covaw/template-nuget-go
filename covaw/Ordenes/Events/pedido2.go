@@ -31,13 +31,14 @@ type Pedido2 struct {
 
 	CuentaCorriente int64 `json:"cuentaCorriente"`
 
-	Cuando string `json:"cuando"`
+	Cuando *UnionNullString `json:"cuando"`
 }
 
-const Pedido2AvroCRC64Fingerprint = " \f\x13\x17q\xbebj"
+const Pedido2AvroCRC64Fingerprint = "w\x1b\xd7q\xd4\xd5\xec+"
 
 func NewPedido2() Pedido2 {
 	r := Pedido2{}
+	r.Cuando = nil
 	return r
 }
 
@@ -90,7 +91,7 @@ func writePedido2(r Pedido2, w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	err = vm.WriteString(r.Cuando, w)
+	err = writeUnionNullString(r.Cuando, w)
 	if err != nil {
 		return err
 	}
@@ -102,7 +103,7 @@ func (r Pedido2) Serialize(w io.Writer) error {
 }
 
 func (r Pedido2) Schema() string {
-	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"numeroDePedido\",\"type\":\"int\"},{\"name\":\"cicloDelPedido\",\"type\":\"string\"},{\"name\":\"codigoDeContratoInterno\",\"type\":\"long\"},{\"name\":\"estadoDelPedido\",\"type\":\"string\"},{\"name\":\"cuentaCorriente\",\"type\":\"long\"},{\"name\":\"cuando\",\"type\":\"string\"}],\"name\":\"Andreani.Scheme.Ordenes.Pedido2\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"numeroDePedido\",\"type\":\"int\"},{\"name\":\"cicloDelPedido\",\"type\":\"string\"},{\"name\":\"codigoDeContratoInterno\",\"type\":\"long\"},{\"name\":\"estadoDelPedido\",\"type\":\"string\"},{\"name\":\"cuentaCorriente\",\"type\":\"long\"},{\"default\":null,\"name\":\"cuando\",\"type\":[\"null\",\"string\"]}],\"name\":\"Andreani.Scheme.Ordenes.Pedido2\",\"type\":\"record\"}"
 }
 
 func (r Pedido2) SchemaName() string {
@@ -151,22 +152,27 @@ func (r *Pedido2) Get(i int) types.Field {
 		return w
 
 	case 6:
-		w := types.String{Target: &r.Cuando}
+		r.Cuando = NewUnionNullString()
 
-		return w
-
+		return r.Cuando
 	}
 	panic("Unknown field index")
 }
 
 func (r *Pedido2) SetDefault(i int) {
 	switch i {
+	case 6:
+		r.Cuando = nil
+		return
 	}
 	panic("Unknown field index")
 }
 
 func (r *Pedido2) NullField(i int) {
 	switch i {
+	case 6:
+		r.Cuando = nil
+		return
 	}
 	panic("Not a nullable field index")
 }
@@ -317,7 +323,9 @@ func (r *Pedido2) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	} else {
-		return fmt.Errorf("no value specified for cuando")
+		r.Cuando = NewUnionNullString()
+
+		r.Cuando = nil
 	}
 	return nil
 }
